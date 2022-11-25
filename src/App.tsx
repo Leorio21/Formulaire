@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import ContactForm from "./Components/Form/ContactForm";
 
 function App() {

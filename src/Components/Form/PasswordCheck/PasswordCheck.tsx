@@ -15,6 +15,7 @@ const Container = styled.div`
 	align-items: flex-start;
 	font-size: 14px;
 	margin-bottom: 10px;
+	width: 100%;
 `;
 
 const CheckLine = styled.span`
