@@ -9,6 +9,12 @@ import PasswordCheck from "./PasswordCheck/PasswordCheck";
 import Button from "./Button/Button";
 
 const schemaValidation = yup.object().shape({
+	firstName: yup.string()
+		.required("Veuillez saisir votre prénom")	
+		.matches( /^[a-zÀ-ÖØ-öø-ÿ -]+$/i, "Présence de caractères non authorisés"),
+	lastName: yup.string()
+		.required("Veuillez saisir votre nom")	
+		.matches( /^[a-z -]+$/i, "Présence de caractères non authorisés"),
 	homePhone: yup.string()
 		.when("mobilePhone", {
 			is: "",
@@ -29,6 +35,9 @@ const schemaValidation = yup.object().shape({
 				.matches( /^[0][67][0-9]{8}$/, {message: "Veuillez saisir un numéro de téléphone portable valide", excludeEmptyString: true})
 				.optional(),
 		}),
+	email: yup.string()
+		.matches( /^([a-z0-9-_.]+)@([a-z0-9-]+)\.([a-z-]{2,})$/i, {message: "Veuillez saisir un email valide", excludeEmptyString: true})
+		.optional(),
 	password: yup.string()
 		.required("Ce champ est obligatoire")
 		.min(8, "Il faut au moins 8 caractères")
@@ -66,46 +75,77 @@ const ContactForm = () => {
 	const { register, handleSubmit, control, formState: { errors } } = useForm<IFormValues>({resolver: yupResolver(schemaValidation)});
 	
 	return (
-		<Form onSubmit={handleSubmit(onFormSubmit)}>
-			
-			<LabeledInput
-				label="Tel port.<sup>(1)</sup> :"
-				register={register}
-				id={"mobilePhone"}
-				type={"text"}
-				name={"mobilePhone"}
-				placeHolder={"0102030405"}
-				error={errors.mobilePhone?.message}
-				required={true}
-			/>
-			<LabeledInput
-				label="Tel fixe<sup>(1)</sup>:"
-				register={register}
-				id={"homePhone"}
-				type={"text"}
-				name={"homePhone"}
-				placeHolder={"0102030405"}
-				error={errors.homePhone?.message}
-				required={true}
-			/>
-			<LabeledInput
-				label="Mot de passe* :"
-				register={register}
-				id={"password"}
-				type={"password"}
-				name={"password"}
-				placeHolder={"Votre mot de passe"}
-				error={errors.password?.message}
-				required={true}
-			/>
-			<PasswordCheck control={control} name={"password"} />
-			
-			<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} />
+		<>
+			<Form onSubmit={handleSubmit(onFormSubmit)}>
+				<LabeledInput
+					label="Prénom* :"
+					register={register}
+					id={"firstName"}
+					type={"text"}
+					name={"firstName"}
+					placeHolder={"Votre prénom"}
+					error={errors.firstName?.message}
+					required={true}
+				/>
+				<LabeledInput
+					label="Nom* :"
+					register={register}
+					id={"lastName"}
+					type={"text"}
+					name={"lastName"}
+					placeHolder={"Votre nom"}
+					error={errors.lastName?.message}
+					required={true}
+				/>
+				<LabeledInput
+					label="Tel port.<sup>(1)</sup> :"
+					register={register}
+					id={"mobilePhone"}
+					type={"text"}
+					name={"mobilePhone"}
+					placeHolder={"0102030405"}
+					error={errors.mobilePhone?.message}
+					required={true}
+				/>
+				<LabeledInput
+					label="Tel fixe<sup>(1)</sup>:"
+					register={register}
+					id={"homePhone"}
+					type={"text"}
+					name={"homePhone"}
+					placeHolder={"0102030405"}
+					error={errors.homePhone?.message}
+					required={true}
+				/>
+				<LabeledInput
+					label="Email :"
+					register={register}
+					id={"email"}
+					type={"text"}
+					name={"email"}
+					placeHolder={"Votre email"}
+					error={errors.email?.message}
+					required={true}
+				/>
+				<LabeledInput
+					label="Mot de passe* :"
+					register={register}
+					id={"password"}
+					type={"password"}
+					name={"password"}
+					placeHolder={"Votre mot de passe"}
+					error={errors.password?.message}
+					required={true}
+				/>
+				<PasswordCheck control={control} name={"password"} />
+				
+				<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} />
+			</Form>
 			<Footer>
 				<FooterItem>* Champs obligatoire</FooterItem>
 				<FooterItem><sup>(1)</sup> Au moins 1 des champs obligatoire</FooterItem>
 			</Footer>
-		</Form>
+		</>
 	);
 };
 
