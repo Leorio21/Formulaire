@@ -7,6 +7,7 @@ import LabeledInput from "./LabeledInput/LabeledInput";
 import styled from "styled-components";
 import PasswordCheck from "./PasswordCheck/PasswordCheck";
 import Button from "./Button/Button";
+import PasswordConfirm from "./PasswordConfirm/PasswordConfirm";
 
 const schemaValidation = yup.object().shape({
 	firstName: yup.string()
@@ -45,7 +46,9 @@ const schemaValidation = yup.object().shape({
 		.matches( /[A-Z]/, "Il faut au moins 1 majuscule")
 		.matches( /[a-z]/, "Il faut au moins 1 minuscule")
 		.matches( /[0-9].*[0-9]/, "Il faut au moins 2 chiffres")
-		.matches( /[\W]/, "Il faut au moins 1 symbole")
+		.matches( /[\W]/, "Il faut au moins 1 symbole"),
+	confirmPassword: yup.string()
+		.oneOf([yup.ref("password")], "Les mot de passe ne correspondent pas"),
 }, [["homePhone", "mobilePhone"]]);
 
 const Form = styled.form`
@@ -138,7 +141,17 @@ const ContactForm = () => {
 					required={true}
 				/>
 				<PasswordCheck control={control} name={"password"} />
-				
+				<LabeledInput
+					label="Confirmer votre mot de passe* :"
+					register={register}
+					id={"confirmPassword"}
+					type={"password"}
+					name={"confirmPassword"}
+					placeHolder={"Confirmer votre mot de passe"}
+					error={errors.confirmPassword?.message}
+					required={true}
+				/>
+				<PasswordConfirm control={control} name={"password"} nameConfirm={"confirmPassword"} />
 				<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} />
 			</Form>
 			<Footer>
