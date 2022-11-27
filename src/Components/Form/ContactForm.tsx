@@ -8,6 +8,7 @@ import styled from "styled-components";
 import PasswordCheck from "./PasswordCheck/PasswordCheck";
 import Button from "./Button/Button";
 import PasswordConfirm from "./PasswordConfirm/PasswordConfirm";
+import { devices } from "../../Styles/Styles";
 
 const schemaValidation = yup.object().shape({
 	firstName: yup.string()
@@ -48,15 +49,43 @@ const schemaValidation = yup.object().shape({
 		.matches( /[0-9].*[0-9]/, "Il faut au moins 2 chiffres")
 		.matches( /[\W]/, "Il faut au moins 1 symbole"),
 	confirmPassword: yup.string()
+		.required("Ce champ est obligatoire")
 		.oneOf([yup.ref("password")], "Les mot de passe ne correspondent pas"),
 }, [["homePhone", "mobilePhone"]]);
+
+const Container = styled.div`	
+	padding: 10px;
+	width: calc(100% - 20px);
+	max-width: 1440px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	@media screen and ${devices.desktopL} {
+		margin: auto;
+	}
+`;
 
 const Form = styled.form`
 	padding: 10px;
 	display: flex;
-	flex-direction: column;
+	width: calc(100% - 20px);
+	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
+	@media screen and ${devices.tablette} {
+		display: grid;
+		grid-template-columns: 50% 50%;
+		grid-template-areas:
+			"input1 input2"
+			"input3 input4"
+			"input5 ."
+			"input6 input7"
+			"passCheck passConfirm"
+			"button button";
+		column-gap: 10px;
+		row-gap: 10px;
+		align-items: start;
+	}
 `;
 
 const Footer = styled.div`
@@ -65,20 +94,16 @@ const Footer = styled.div`
 	justify-content: flex-start;
 `;
 
-const FooterItem = styled.span`
-	
-`;
-
 const onFormSubmit = (data: IFormValues) => {
 	console.log(data);
 };
 
 const ContactForm = () => {
 
-	const { register, handleSubmit, control, formState: { errors } } = useForm<IFormValues>({resolver: yupResolver(schemaValidation)});
+	const { register, handleSubmit, control, formState: { errors } } = useForm<IFormValues>({defaultValues: { password: "", confirmPassword: "" }, resolver: yupResolver(schemaValidation)});
 	
 	return (
-		<>
+		<Container>
 			<Form onSubmit={handleSubmit(onFormSubmit)}>
 				<LabeledInput
 					label="Prénom* :"
@@ -89,6 +114,7 @@ const ContactForm = () => {
 					placeHolder={"Votre prénom"}
 					error={errors.firstName?.message}
 					required={true}
+					gridPosition={"input1"}
 				/>
 				<LabeledInput
 					label="Nom* :"
@@ -99,6 +125,7 @@ const ContactForm = () => {
 					placeHolder={"Votre nom"}
 					error={errors.lastName?.message}
 					required={true}
+					gridPosition={"input2"}
 				/>
 				<LabeledInput
 					label="Tel port.<sup>(1)</sup> :"
@@ -106,9 +133,10 @@ const ContactForm = () => {
 					id={"mobilePhone"}
 					type={"text"}
 					name={"mobilePhone"}
-					placeHolder={"0102030405"}
+					placeHolder={"0612345789"}
 					error={errors.mobilePhone?.message}
 					required={true}
+					gridPosition={"input3"}
 				/>
 				<LabeledInput
 					label="Tel fixe<sup>(1)</sup>:"
@@ -116,9 +144,10 @@ const ContactForm = () => {
 					id={"homePhone"}
 					type={"text"}
 					name={"homePhone"}
-					placeHolder={"0102030405"}
+					placeHolder={"0123456789"}
 					error={errors.homePhone?.message}
 					required={true}
+					gridPosition={"input4"}
 				/>
 				<LabeledInput
 					label="Email :"
@@ -129,6 +158,7 @@ const ContactForm = () => {
 					placeHolder={"Votre email"}
 					error={errors.email?.message}
 					required={true}
+					gridPosition={"input5"}
 				/>
 				<LabeledInput
 					label="Mot de passe* :"
@@ -139,8 +169,9 @@ const ContactForm = () => {
 					placeHolder={"Votre mot de passe"}
 					error={errors.password?.message}
 					required={true}
+					gridPosition={"input6"}
 				/>
-				<PasswordCheck control={control} name={"password"} />
+				<PasswordCheck control={control} name={"password"} gridPosition={"passCheck"} />
 				<LabeledInput
 					label="Confirmer votre mot de passe* :"
 					register={register}
@@ -150,15 +181,16 @@ const ContactForm = () => {
 					placeHolder={"Confirmer votre mot de passe"}
 					error={errors.confirmPassword?.message}
 					required={true}
+					gridPosition={"input7"}
 				/>
-				<PasswordConfirm control={control} name={"password"} nameConfirm={"confirmPassword"} />
-				<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} />
+				<PasswordConfirm control={control} name={"password"} nameConfirm={"confirmPassword"} gridPosition={"passConfirm"} />
+				<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} gridPosition={"button"}/>
 			</Form>
 			<Footer>
-				<FooterItem>* Champs obligatoire</FooterItem>
-				<FooterItem><sup>(1)</sup> Au moins 1 des champs obligatoire</FooterItem>
+				<span>* Champs obligatoire</span>
+				<span><sup>(1)</sup> Au moins 1 des champs obligatoire</span>
 			</Footer>
-		</>
+		</Container>
 	);
 };
 

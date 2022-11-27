@@ -6,7 +6,19 @@ interface ButtonProps {
     bgColor: string
     color: string
     type?: "submit" | "reset" | "button"
+	gridPosition?: string
 }
+
+interface GridProps {
+	gridPosition: string
+}
+
+const Container = styled.div<GridProps>`
+	width: 100%;
+    display: flex;
+    justify-content: center;
+	grid-area: ${props => props.gridPosition}
+`;
 
 const FormButton = styled.button<ButtonProps>`
     width: 150px;
@@ -17,10 +29,12 @@ const FormButton = styled.button<ButtonProps>`
     background-color: ${props => props.bgColor};
 `;
 
-const Button = ({label, bgColor, color, type}: ButtonProps) => {
+const Button = ({label, bgColor, color, type, gridPosition = ""}: ButtonProps) => {
 
 	return (
-		<FormButton type={type} bgColor={bgColor} color={color} >{label}</FormButton>
+		<Container gridPosition={gridPosition}>
+			<FormButton type={type} bgColor={bgColor} color={color} >{label}</FormButton>
+		</Container>
 	);
 };
 

@@ -14,14 +14,20 @@ interface LabeledInputProps {
 	error?: string
     required: boolean
 	revelation?: boolean
+	gridPosition?: string
 }
 
-const Label = styled.label`
+interface GridProps {
+	gridPosition: string
+}
+
+const Label = styled.label<GridProps>`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	color: white;
 	width: 100%;
+	grid-area: ${props => props.gridPosition};
 `;
 
 const Title = styled.span`
@@ -31,24 +37,22 @@ const Title = styled.span`
 const Error = styled.span`
 	color: red;
 	height: 25px;
-	padding-left: 10px;
+	padding: 5px 0px 5px 10px;
 	font-weight: bold;
 	font-size: 12px;
 	text-align: left;
 `;
 
 const Input = styled.input`
-	width: 100%;
+	width: 95%;
 `;
 
-const LabeledInput = ({id, type, name, label, placeHolder, register, error, required}: LabeledInputProps) => {
+const LabeledInput = ({id, type, name, label, placeHolder, register, error, required, gridPosition = ""}: LabeledInputProps) => {
 	return (
-		<>
-			<Label htmlFor={id}><Title>{parse(label)}</Title>
-				<Input id={id} type={type} {...register(name, { required })} placeholder={placeHolder} ></Input>
-			</Label>
+		<Label htmlFor={id} gridPosition={gridPosition} ><Title>{parse(label)}</Title>
+			<Input id={id} type={type} {...register(name, { required })} placeholder={placeHolder} ></Input>
 			<Error>{error}</Error>
-		</>
+		</Label>
 	);
 };
 

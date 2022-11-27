@@ -7,15 +7,21 @@ import styled from "styled-components";
 interface PasswordCheckProps<T extends FieldValues>{
     name: Path<T>
     control: Control<T>
+	gridPosition?: string
 }
 
-const Container = styled.div`
+interface GridProps {
+	gridPosition: string
+}
+
+const Container = styled.div<GridProps>`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	font-size: 14px;
 	margin-bottom: 10px;
 	width: 100%;
+	grid-area: ${props => props.gridPosition};
 `;
 
 const CheckLine = styled.span`
@@ -23,7 +29,7 @@ const CheckLine = styled.span`
 	align-items: center;
 `;
 
-const passwordCheck = <T extends FieldValues>({name, control}: PasswordCheckProps<T>) => {
+const passwordCheck = <T extends FieldValues>({name, control, gridPosition = ""}: PasswordCheckProps<T>) => {
 
 	const password = useWatch({ control, name });
 	const iconSize = 20;
@@ -31,7 +37,7 @@ const passwordCheck = <T extends FieldValues>({name, control}: PasswordCheckProp
 	const iconXColor = "red";
 
 	return (
-		<Container>
+		<Container gridPosition={gridPosition}>
 			<span>Le mot de passe doit :</span>
 			<CheckLine>{password?.match(/[a-z]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 minuscule</CheckLine>
 			<CheckLine>{password?.match(/[A-Z]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 majuscule</CheckLine>

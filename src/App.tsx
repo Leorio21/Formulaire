@@ -1,13 +1,13 @@
 import React from "react";
 import ContactForm from "./Components/Form/ContactForm";
 
-function App() {
+const App = () => {
 
 	return (
 		<div className="App">
 			<ContactForm />
 		</div>
 	);
-}
+};
 
 export default App;
