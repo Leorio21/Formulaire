@@ -32,6 +32,7 @@ const Label = styled.label<GridProps>`
 
 const Title = styled.span`
 	display: flex;
+	padding-left: 10px;
 `;
 
 const Error = styled.span`
@@ -45,6 +46,8 @@ const Error = styled.span`
 
 const Input = styled.input`
 	width: 95%;
+	border-radius: 10px;
+	padding: 5px 10px;
 `;
 
 const LabeledInput = ({id, type, name, label, placeHolder, register, error, required, gridPosition = ""}: LabeledInputProps) => {
