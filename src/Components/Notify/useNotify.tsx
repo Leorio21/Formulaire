@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Notify } from "../Components/Notify/Notify";
+import { Notify } from "./Notify";
 
 interface NotifyProps {
 	id: string

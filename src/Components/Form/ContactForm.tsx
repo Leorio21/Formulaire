@@ -9,7 +9,7 @@ import PasswordCheck from "./PasswordCheck/PasswordCheck";
 import Button from "./Button/Button";
 import PasswordConfirm from "./PasswordConfirm/PasswordConfirm";
 import { devices } from "../../Styles/Styles";
-import { useNotify } from "../../Hooks/useNotify";
+import { useNotify } from "../Notify/useNotify";
 
 const schemaValidation = yup.object().shape({
 	firstName: yup.string()
@@ -199,8 +199,6 @@ const ContactForm = () => {
 			</Container>
 			<NotifyContainer
 				id={"notify"}
-				backGroundColor={"green"}
-				textColor={"white"}
 			/>
 		</>
 	);
