@@ -29,11 +29,15 @@ export const useNotify = (): {
 		setContent(newContent);
 	};
 
+	const resetContent = () => {
+		setContent("");
+	};
+
 	const NotifyContainer = ({id, textColor = "white", backGroundColor = "green"}: NotifyProps) => {
 
 		return (
 			<Container id={id}>
-				<Notify id={id} content={content} textColor={textColor}  backGroundColor={backGroundColor}/>
+				<Notify id={id} content={content} textColor={textColor}  backGroundColor={backGroundColor} resetContent={resetContent} />
 			</Container>
 		);
 	};

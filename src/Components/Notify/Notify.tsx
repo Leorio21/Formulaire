@@ -7,6 +7,7 @@ interface NotifyProps {
 	content: string
 	backGroundColor: string
 	textColor: string
+	resetContent: () => void
 }
 
 interface NotifyStyleProps {
@@ -17,7 +18,7 @@ interface NotifyStyleProps {
 const NotifyContent = styled.div<NotifyStyleProps>`
 	position: absolute;
 	top: 20px;
-	left: calc(50% - 135px);
+	left: calc(50% - 155px);
 	width: 250px;
 	height: 30px;
 	padding: 10px 30px;
@@ -38,10 +39,11 @@ const CloseButton = styled.p`
 	height: 15px;
 `;
 
-export const Notify = ({id, content, textColor, backGroundColor}: NotifyProps) => {
+export const Notify = ({id, content, textColor, backGroundColor, resetContent}: NotifyProps) => {
 
 	const onCloseHandle = () => {
 		document.getElementById(id)!.style.visibility = "hidden";
+		resetContent();
 	};
 
 	useEffect(() => {
