@@ -32,7 +32,7 @@ const Label = styled.label<GridProps>`
 
 const Title = styled.span`
 	display: flex;
-	padding-left: 10px;
+	padding-left: 100px;
 `;
 
 const Error = styled.span`

@@ -9,6 +9,7 @@ import PasswordCheck from "./PasswordCheck/PasswordCheck";
 import Button from "./Button/Button";
 import PasswordConfirm from "./PasswordConfirm/PasswordConfirm";
 import { devices } from "../../Styles/Styles";
+import { useNotify } from "../../Hooks/useNotify";
 
 const schemaValidation = yup.object().shape({
 	firstName: yup.string()
@@ -53,7 +54,8 @@ const schemaValidation = yup.object().shape({
 		.oneOf([yup.ref("password")], "Les mot de passe ne correspondent pas"),
 }, [["homePhone", "mobilePhone"]]);
 
-const Container = styled.div`	
+const Container = styled.div`
+	position: relative;
 	padding: 10px;
 	width: calc(100% - 20px);
 	max-width: 1440px;
@@ -94,103 +96,113 @@ const Footer = styled.div`
 	justify-content: flex-start;
 `;
 
-const onFormSubmit = (data: IFormValues) => {
-	console.log(data);
-};
-
 const ContactForm = () => {
+	
+	const { register, handleSubmit, control, reset, formState: { errors } } = useForm<IFormValues>({defaultValues: { password: "", confirmPassword: "" }, resolver: yupResolver(schemaValidation)});
+	const { notifyContent, NotifyContainer } = useNotify();
 
-	const { register, handleSubmit, control, formState: { errors } } = useForm<IFormValues>({defaultValues: { password: "", confirmPassword: "" }, resolver: yupResolver(schemaValidation)});
+	const onFormSubmit = (data: IFormValues) => {
+		console.log(data);
+		reset();
+		notifyContent("Formulaire validé");
+	};
 	
 	return (
-		<Container>
-			<Form onSubmit={handleSubmit(onFormSubmit)}>
-				<LabeledInput
-					label="Prénom* :"
-					register={register}
-					id={"firstName"}
-					type={"text"}
-					name={"firstName"}
-					placeHolder={"Votre prénom"}
-					error={errors.firstName?.message}
-					required={true}
-					gridPosition={"input1"}
-				/>
-				<LabeledInput
-					label="Nom* :"
-					register={register}
-					id={"lastName"}
-					type={"text"}
-					name={"lastName"}
-					placeHolder={"Votre nom"}
-					error={errors.lastName?.message}
-					required={true}
-					gridPosition={"input2"}
-				/>
-				<LabeledInput
-					label="Tel port.<sup>(1)</sup> :"
-					register={register}
-					id={"mobilePhone"}
-					type={"text"}
-					name={"mobilePhone"}
-					placeHolder={"0612345789"}
-					error={errors.mobilePhone?.message}
-					required={true}
-					gridPosition={"input3"}
-				/>
-				<LabeledInput
-					label="Tel fixe<sup>(1)</sup>:"
-					register={register}
-					id={"homePhone"}
-					type={"text"}
-					name={"homePhone"}
-					placeHolder={"0123456789"}
-					error={errors.homePhone?.message}
-					required={true}
-					gridPosition={"input4"}
-				/>
-				<LabeledInput
-					label="Email :"
-					register={register}
-					id={"email"}
-					type={"text"}
-					name={"email"}
-					placeHolder={"Votre email"}
-					error={errors.email?.message}
-					required={true}
-					gridPosition={"input5"}
-				/>
-				<LabeledInput
-					label="Mot de passe* :"
-					register={register}
-					id={"password"}
-					type={"password"}
-					name={"password"}
-					placeHolder={"Votre mot de passe"}
-					error={errors.password?.message}
-					required={true}
-					gridPosition={"input6"}
-				/>
-				<PasswordCheck control={control} name={"password"} gridPosition={"passCheck"} />
-				<LabeledInput
-					label="Confirmer votre mot de passe* :"
-					register={register}
-					id={"confirmPassword"}
-					type={"password"}
-					name={"confirmPassword"}
-					placeHolder={"Confirmer votre mot de passe"}
-					error={errors.confirmPassword?.message}
-					required={true}
-					gridPosition={"input7"}
-				/>
-				<PasswordConfirm control={control} name={"password"} nameConfirm={"confirmPassword"} gridPosition={"passConfirm"} />
-				<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} gridPosition={"button"}/>
-			</Form>
-			<Footer>
-				<span>* Champs obligatoire</span>
-				<span><sup>(1)</sup> Au moins 1 des champs obligatoire</span>
-			</Footer>
-		</Container>
+		<>
+			<Container>
+				<Form onSubmit={handleSubmit(onFormSubmit)}>
+					<LabeledInput
+						label="Prénom* :"
+						register={register}
+						id={"firstName"}
+						type={"text"}
+						name={"firstName"}
+						placeHolder={"Votre prénom"}
+						error={errors.firstName?.message}
+						required={true}
+						gridPosition={"input1"}
+					/>
+					<LabeledInput
+						label="Nom* :"
+						register={register}
+						id={"lastName"}
+						type={"text"}
+						name={"lastName"}
+						placeHolder={"Votre nom"}
+						error={errors.lastName?.message}
+						required={true}
+						gridPosition={"input2"}
+					/>
+					<LabeledInput
+						label="Tel port.<sup>(1)</sup> :"
+						register={register}
+						id={"mobilePhone"}
+						type={"text"}
+						name={"mobilePhone"}
+						placeHolder={"0612345789"}
+						error={errors.mobilePhone?.message}
+						required={true}
+						gridPosition={"input3"}
+					/>
+					<LabeledInput
+						label="Tel fixe<sup>(1)</sup>:"
+						register={register}
+						id={"homePhone"}
+						type={"text"}
+						name={"homePhone"}
+						placeHolder={"0123456789"}
+						error={errors.homePhone?.message}
+						required={true}
+						gridPosition={"input4"}
+					/>
+					<LabeledInput
+						label="Email :"
+						register={register}
+						id={"email"}
+						type={"text"}
+						name={"email"}
+						placeHolder={"Votre email"}
+						error={errors.email?.message}
+						required={true}
+						gridPosition={"input5"}
+					/>
+					<LabeledInput
+						label="Mot de passe* :"
+						register={register}
+						id={"password"}
+						type={"password"}
+						name={"password"}
+						placeHolder={"Votre mot de passe"}
+						error={errors.password?.message}
+						required={true}
+						gridPosition={"input6"}
+					/>
+					<PasswordCheck control={control} name={"password"} gridPosition={"passCheck"} />
+					<LabeledInput
+						label="Confirmer votre mot de passe* :"
+						register={register}
+						id={"confirmPassword"}
+						type={"password"}
+						name={"confirmPassword"}
+						placeHolder={"Confirmer votre mot de passe"}
+						error={errors.confirmPassword?.message}
+						required={true}
+						gridPosition={"input7"}
+					/>
+					<PasswordConfirm control={control} name={"password"} nameConfirm={"confirmPassword"} gridPosition={"passConfirm"} />
+					<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} gridPosition={"button"}/>
+				</Form>
+				<Footer>
+					<span>* Champs obligatoire</span>
+					<span><sup>(1)</sup> Au moins 1 des champs obligatoire</span>
+				</Footer>
+			</Container>
+			<NotifyContainer
+				id={"notify"}
+				backGroundColor={"green"}
+				textColor={"white"}
+			/>
+		</>
 	);
 };
 

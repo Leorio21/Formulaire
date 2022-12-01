@@ -7,6 +7,7 @@ interface ButtonProps {
     color: string
     type?: "submit" | "reset" | "button"
 	gridPosition?: string
+    onClick?: () => void
 }
 
 interface GridProps {
@@ -29,11 +30,11 @@ const FormButton = styled.button<ButtonProps>`
     background-color: ${props => props.bgColor};
 `;
 
-const Button = ({label, bgColor, color, type, gridPosition = ""}: ButtonProps) => {
+const Button = ({label, bgColor, color, type, gridPosition = "", onClick}: ButtonProps) => {
 
 	return (
 		<Container gridPosition={gridPosition}>
-			<FormButton type={type} bgColor={bgColor} color={color} >{label}</FormButton>
+			<FormButton type={type} bgColor={bgColor} color={color} onClick={onClick}>{label}</FormButton>
 		</Container>
 	);
 };
