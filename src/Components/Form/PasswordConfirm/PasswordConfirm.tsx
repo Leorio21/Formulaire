@@ -1,8 +1,8 @@
 import React from "react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
-
 import { Control, FieldValues, Path, useWatch } from "react-hook-form";
-import styled from "styled-components";
+import classNames from "classNames";
+import "./PasswordConfirm.scss";
 
 interface PasswordConfirmProps<T extends FieldValues>{
     name: Path<T>
@@ -10,25 +10,6 @@ interface PasswordConfirmProps<T extends FieldValues>{
     control: Control<T>
 	gridPosition?: string
 }
-
-interface GridProps {
-	gridPosition: string
-}
-
-const Container = styled.div<GridProps>`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	font-size: 14px;
-	margin-bottom: 10px;
-	width: 100%;
-	grid-area: ${props => props.gridPosition};
-`;
-
-const CheckLine = styled.span`
-	display: flex;
-	align-items: center;
-`;
 
 const PasswordConfirm = <T extends FieldValues>({name, nameConfirm, control, gridPosition = ""}: PasswordConfirmProps<T>) => {
 
@@ -39,9 +20,14 @@ const PasswordConfirm = <T extends FieldValues>({name, nameConfirm, control, gri
 	const iconXColor = "red";
 
 	return (
-		<Container gridPosition={gridPosition}>
-			{password === passwordConfirm ? <CheckLine><CheckIcon color={iconCheckColor} height={iconSize} /> Les mots de passe sont identiques</CheckLine>:<CheckLine><XMarkIcon color={iconXColor} height={iconSize} /> Les mots de passe ne sont pas identiques</CheckLine>}
-		</Container>
+		<div className={classNames("passwordConfirm__container")} style={{gridArea: `${gridPosition}`}}>
+			{password === passwordConfirm
+				?
+				<span className={classNames("passwordConfirm__checkLine")}><CheckIcon color={iconCheckColor} height={iconSize} /> Les mots de passe sont identiques</span>
+				:
+				<span className={classNames("passwordConfirm__checkLine")}><XMarkIcon color={iconXColor} height={iconSize} /> Les mots de passe ne sont pas identiques</span>
+			}
+		</div>
 	);
 };
 

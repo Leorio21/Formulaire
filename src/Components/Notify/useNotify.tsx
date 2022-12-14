@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import styled from "styled-components";
 import { Notify } from "./Notify";
 
@@ -17,30 +17,27 @@ const Container = styled.div`
 	visibility: hidden;
 	`;
 
+const initialContent = "";
+const notifyReducer = (state: string, action: { isVisible: boolean, text: string}) => {
+	state = action.text;
+	return state;
+};
+
 export const useNotify = (): {
-	content: string,
-	notifyContent: (newContent: string) => void,
+	dispatchNotify: ({ isVisible, text}:{isVisible: boolean,  text: string}) => string,
 	NotifyContainer: ({id, textColor , backGroundColor}: NotifyProps) => JSX.Element
 } => {
 
-	const [content, setContent] = useState("");
-
-	const notifyContent = (newContent: string) => {
-		setContent(newContent);
-	};
-
-	const resetContent = () => {
-		setContent("");
-	};
+	const [notify, dispatchNotify] = useReducer(notifyReducer, initialContent);
 
 	const NotifyContainer = ({id, textColor = "white", backGroundColor = "green"}: NotifyProps) => {
 
 		return (
 			<Container id={id}>
-				<Notify id={id} content={content} textColor={textColor}  backGroundColor={backGroundColor} resetContent={resetContent} />
+				{notify && <Notify id={id} content={notify} textColor={textColor}  backGroundColor={backGroundColor} dispatchNotify={dispatchNotify} />}
 			</Container>
 		);
 	};
 
-	return {content, notifyContent, NotifyContainer};
+	return {dispatchNotify, NotifyContainer};
 };

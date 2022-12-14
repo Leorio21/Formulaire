@@ -1,8 +1,9 @@
 import React from "react";
 import { Path, UseFormRegister } from "react-hook-form";
-import styled from "styled-components";
 import { IFormValues } from "../../../Interface/Form";
 import parse from "html-react-parser";
+import classNames from "classNames";
+import "./LabeledInput.scss";
 
 interface LabeledInputProps {
 	id: string
@@ -17,45 +18,12 @@ interface LabeledInputProps {
 	gridPosition?: string
 }
 
-interface GridProps {
-	gridPosition: string
-}
-
-const Label = styled.label<GridProps>`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	color: white;
-	width: 100%;
-	grid-area: ${props => props.gridPosition};
-`;
-
-const Title = styled.span`
-	display: flex;
-	padding-left: 100px;
-`;
-
-const Error = styled.span`
-	color: red;
-	height: 25px;
-	padding: 5px 0px 5px 10px;
-	font-weight: bold;
-	font-size: 12px;
-	text-align: left;
-`;
-
-const Input = styled.input`
-	width: 95%;
-	border-radius: 10px;
-	padding: 5px 10px;
-`;
-
 const LabeledInput = ({id, type, name, label, placeHolder, register, error, required, gridPosition = ""}: LabeledInputProps) => {
 	return (
-		<Label htmlFor={id} gridPosition={gridPosition} ><Title>{parse(label)}</Title>
-			<Input id={id} type={type} {...register(name, { required })} placeholder={placeHolder} ></Input>
-			<Error>{error}</Error>
-		</Label>
+		<label className={classNames("labeledInput__label")} htmlFor={id}  style={{gridArea: `${gridPosition}`}}><span className={classNames("labeledInput__title")}>{parse(label)}</span>
+			<input  className={classNames("labeledInput__input")} id={id} type={type} {...register(name, { required })} placeholder={placeHolder} ></input>
+			<span className={classNames("labeledInput__error")}>{error}</span>
+		</label>
 	);
 };
 

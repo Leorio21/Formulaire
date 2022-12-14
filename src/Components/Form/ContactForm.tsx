@@ -4,12 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { IFormValues } from "../../Interface/Form";
 import LabeledInput from "./LabeledInput/LabeledInput";
-import styled from "styled-components";
 import PasswordCheck from "./PasswordCheck/PasswordCheck";
 import Button from "./Button/Button";
 import PasswordConfirm from "./PasswordConfirm/PasswordConfirm";
-import { devices } from "../../Styles/Styles";
 import { useNotify } from "../Notify/useNotify";
+import classNames from "classNames";
+import "./ContactForm.scss";
 
 const schemaValidation = yup.object().shape({
 	firstName: yup.string()
@@ -54,63 +54,21 @@ const schemaValidation = yup.object().shape({
 		.oneOf([yup.ref("password")], "Les mot de passe ne correspondent pas"),
 }, [["homePhone", "mobilePhone"]]);
 
-const Container = styled.div`
-	position: relative;
-	padding: 10px;
-	width: calc(100% - 20px);
-	max-width: 1440px;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	@media screen and ${devices.desktopL} {
-		margin: auto;
-	}
-`;
-
-const Form = styled.form`
-	padding: 10px;
-	display: flex;
-	width: calc(100% - 20px);
-	flex-flow: row wrap;
-	justify-content: center;
-	align-items: center;
-	@media screen and ${devices.tablette} {
-		display: grid;
-		grid-template-columns: 50% 50%;
-		grid-template-areas:
-			"input1 input2"
-			"input3 input4"
-			"input5 ."
-			"input6 input7"
-			"passCheck passConfirm"
-			"button button";
-		column-gap: 10px;
-		row-gap: 10px;
-		align-items: start;
-	}
-`;
-
-const Footer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-`;
-
 const ContactForm = () => {
 	
 	const { register, handleSubmit, control, reset, formState: { errors } } = useForm<IFormValues>({defaultValues: { password: "", confirmPassword: "" }, resolver: yupResolver(schemaValidation)});
-	const { notifyContent, NotifyContainer } = useNotify();
+	// const { notifyContent, NotifyContainer } = useNotify();
 
 	const onFormSubmit = (data: IFormValues) => {
 		console.log(data);
 		reset();
-		notifyContent("Formulaire validé");
+		// notifyContent("Formulaire validé");
 	};
 	
 	return (
 		<>
-			<Container>
-				<Form onSubmit={handleSubmit(onFormSubmit)}>
+			<div className={classNames("contactForm__container")}>
+				<form className={"contactForm__form"} onSubmit={handleSubmit(onFormSubmit)}>
 					<LabeledInput
 						label="Prénom* :"
 						register={register}
@@ -190,16 +148,16 @@ const ContactForm = () => {
 						gridPosition={"input7"}
 					/>
 					<PasswordConfirm control={control} name={"password"} nameConfirm={"confirmPassword"} gridPosition={"passConfirm"} />
-					<Button label={"Valider"} bgColor={"green"} color={"white"} type={"submit"} gridPosition={"button"}/>
-				</Form>
-				<Footer>
+					<Button label={"Valider"} color={"primary"} type={"submit"} gridPosition={"button"}/>
+				</form>
+				<div className={classNames("contactForm__footer")}>
 					<span>* Champs obligatoire</span>
 					<span><sup>(1)</sup> Au moins 1 des champs obligatoire</span>
-				</Footer>
-			</Container>
-			<NotifyContainer
+				</div>
+			</div>
+			{/* <NotifyContainer
 				id={"notify"}
-			/>
+			/> */}
 		</>
 	);
 };

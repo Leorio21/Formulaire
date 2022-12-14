@@ -1,0 +1,45 @@
+@use "../../Sass/Utils/MixinMQ";
+
+.contactForm {
+    &__container {
+        position: relative;
+        padding: 10px;
+        width: calc(100% - 20px);
+        max-width: 1440px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        @include MixinMQ.desktopL {
+            margin: auto;
+        }
+    }
+
+    &__form {
+        padding: 10px;
+        display: flex;
+        width: calc(100% - 20px);
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        @include MixinMQ.tablette {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-areas:
+                "input1 input2"
+                "input3 input4"
+                "input5 ."
+                "input6 input7"
+                "passCheck passConfirm"
+                "button button";
+            column-gap: 10px;
+            row-gap: 10px;
+            align-items: start;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+}

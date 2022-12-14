@@ -1,33 +1,14 @@
 import React from "react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
-
 import { Control, FieldValues, Path, useWatch } from "react-hook-form";
-import styled from "styled-components";
+import classNames from "classNames";
+import "./PasswordCheck.scss";
 
 interface PasswordCheckProps<T extends FieldValues>{
     name: Path<T>
     control: Control<T>
 	gridPosition?: string
 }
-
-interface GridProps {
-	gridPosition: string
-}
-
-const Container = styled.div<GridProps>`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	font-size: 14px;
-	margin-bottom: 10px;
-	width: 100%;
-	grid-area: ${props => props.gridPosition};
-`;
-
-const CheckLine = styled.span`
-	display: flex;
-	align-items: center;
-`;
 
 const passwordCheck = <T extends FieldValues>({name, control, gridPosition = ""}: PasswordCheckProps<T>) => {
 
@@ -37,14 +18,14 @@ const passwordCheck = <T extends FieldValues>({name, control, gridPosition = ""}
 	const iconXColor = "red";
 
 	return (
-		<Container gridPosition={gridPosition}>
+		<div className={classNames("passwordCheck__container")} style={{gridArea: `${gridPosition}`}}>
 			<span>Le mot de passe doit :</span>
-			<CheckLine>{password?.match(/[a-z]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 minuscule</CheckLine>
-			<CheckLine>{password?.match(/[A-Z]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 majuscule</CheckLine>
-			<CheckLine>{password?.match(/[0-9].*[0-9]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 2 chiffres</CheckLine>
-			<CheckLine>{password?.match(/[\W]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 symbole</CheckLine>
-			<CheckLine>{password?.match(/^.{8,20}$/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} faire entre 8 et 20 caractères</CheckLine>
-		</Container>
+			<span className={classNames("passwordCheck__checkLine")}>{password?.match(/[a-z]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 minuscule</span>
+			<span className={classNames("passwordCheck__checkLine")}>{password?.match(/[A-Z]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 majuscule</span>
+			<span className={classNames("passwordCheck__checkLine")}>{password?.match(/[0-9].*[0-9]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 2 chiffres</span>
+			<span className={classNames("passwordCheck__checkLine")}>{password?.match(/[\W]/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} contenir au moins 1 symbole</span>
+			<span className={classNames("passwordCheck__checkLine")}>{password?.match(/^.{8,20}$/) ? <CheckIcon color={iconCheckColor} height={iconSize} />:<XMarkIcon color={iconXColor} height={iconSize} />} faire entre 8 et 20 caractères</span>
+		</div>
 	);
 };
 

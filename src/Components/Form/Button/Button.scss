@@ -1,0 +1,23 @@
+.button {
+    &__container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        // grid-area: ${props => props.gridPosition}
+    }
+
+    &__button {
+        width: 150px;
+        height: 25px;
+        border-radius: 25px;
+        border: 2px solid #00e200;
+        &--primary {
+            color: #FFFFFF;
+            background-color: #00ac00;
+            &:hover {
+                background-color: #007700;
+                border-color: #00964b;
+            }
+        }
+    }
+}

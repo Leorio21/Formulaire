@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
@@ -7,7 +7,7 @@ interface NotifyProps {
 	content: string
 	backGroundColor: string
 	textColor: string
-	resetContent: () => void
+	dispatchNotify: ({ isVisible, text}:({isVisible: boolean,  text?: string})) => string
 }
 
 interface NotifyStyleProps {
@@ -39,25 +39,32 @@ const CloseButton = styled.p`
 	height: 15px;
 `;
 
-export const Notify = ({id, content, textColor, backGroundColor, resetContent}: NotifyProps) => {
+export const Notify = ({id, content, textColor, backGroundColor, dispatchNotify}: NotifyProps) => {
+
+	const [isActive, setIsActive] = useState(false);
 
 	const onCloseHandle = () => {
 		document.getElementById(id)!.style.visibility = "hidden";
-		resetContent();
+		dispatchNotify({isVisible: false});
 	};
 
 	useEffect(() => {
 		if (content) {
 			document.getElementById(id)!.style.visibility = "visible";
+			setIsActive(true);
 		}
 	}, [content]);
 
 	return (
-		<NotifyContent textColor={textColor}  backGroundColor={backGroundColor}>
-			{content}
-			<CloseButton onClick={onCloseHandle}>
-				<XMarkIcon height={15} color={textColor} />
-			</CloseButton>
-		</NotifyContent>
+		<>
+			{isActive &&
+				<NotifyContent textColor={textColor}  backGroundColor={backGroundColor}>
+					{content}
+					<CloseButton onClick={onCloseHandle}>
+						<XMarkIcon height={15} color={textColor} />
+					</CloseButton>
+				</NotifyContent>
+			}
+		</>
 	);
 };
