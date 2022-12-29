@@ -1,21 +1,13 @@
 import React, { useReducer } from "react";
-import styled from "styled-components";
 import { Notify } from "./Notify";
+import classNames from "classNames";
+import "./useNotify.scss";
 
 interface NotifyProps {
 	id: string
 	backGroundColor?: string
-	textColor?: string
+	color?: string
 }
-
-const Container = styled.div`
-	position: absolute;
-	top: 0px;
-	left: 50%;
-	background-color: transparent;
-	z-index: 99;
-	visibility: hidden;
-	`;
 
 const initialContent = "";
 const notifyReducer = (state: string, action: { isVisible: boolean, text: string}) => {
@@ -24,20 +16,24 @@ const notifyReducer = (state: string, action: { isVisible: boolean, text: string
 };
 
 export const useNotify = (): {
-	dispatchNotify: ({ isVisible, text}:{isVisible: boolean,  text: string}) => string,
-	NotifyContainer: ({id, textColor , backGroundColor}: NotifyProps) => JSX.Element
+	setNotify: (notifyContent: string, visibility?: boolean ) => void,
+	NotifyContainer: ({id, color , backGroundColor}: NotifyProps) => JSX.Element
 } => {
 
 	const [notify, dispatchNotify] = useReducer(notifyReducer, initialContent);
 
-	const NotifyContainer = ({id, textColor = "white", backGroundColor = "green"}: NotifyProps) => {
+	const setNotify = (notifyContent: string, visibile = false) => {
+		dispatchNotify({isVisible: visibile, text: notifyContent});
+	};
+
+	const NotifyContainer = ({id, color = "primary"}: NotifyProps) => {
 
 		return (
-			<Container id={id}>
-				{notify && <Notify id={id} content={notify} textColor={textColor}  backGroundColor={backGroundColor} dispatchNotify={dispatchNotify} />}
-			</Container>
+			<div id={id} className={classNames("useNotify__container")}>
+				{notify && <Notify id={id} content={notify} color={color} setNotify={setNotify} />}
+			</div>
 		);
 	};
 
-	return {dispatchNotify, NotifyContainer};
+	return {setNotify, NotifyContainer};
 };

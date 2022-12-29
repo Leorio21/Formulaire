@@ -1,0 +1,10 @@
+.useNotify {
+    &__container {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        background-color: transparent;
+        z-index: 99;
+        visibility: hidden;
+    }
+}

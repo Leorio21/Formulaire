@@ -57,12 +57,12 @@ const schemaValidation = yup.object().shape({
 const ContactForm = () => {
 	
 	const { register, handleSubmit, control, reset, formState: { errors } } = useForm<IFormValues>({defaultValues: { password: "", confirmPassword: "" }, resolver: yupResolver(schemaValidation)});
-	// const { notifyContent, NotifyContainer } = useNotify();
+	const { setNotify, NotifyContainer } = useNotify();
 
 	const onFormSubmit = (data: IFormValues) => {
 		console.log(data);
 		reset();
-		// notifyContent("Formulaire validé");
+		setNotify("Formulaire validé", true);
 	};
 	
 	return (
@@ -155,9 +155,9 @@ const ContactForm = () => {
 					<span><sup>(1)</sup> Au moins 1 des champs obligatoire</span>
 				</div>
 			</div>
-			{/* <NotifyContainer
+			<NotifyContainer
 				id={"notify"}
-			/> */}
+			/>
 		</>
 	);
 };
